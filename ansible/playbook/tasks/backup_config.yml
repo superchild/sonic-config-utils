@@ -11,11 +11,9 @@
     delegate_to: localhost
 
   - name: backup config_db.json
-    shell: sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@${{ansible_host}} "sudo cat {{config_db_dir}}/config_db.json" > {{backup_dir}}/config_db.json
-    ignore_errors: yes
+    shell: sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@{{ansible_host}} "sudo cat {{config_db_dir}}/config_db.json" > {{backup_dir}}/config_db.json
     delegate_to: localhost
 
   - name: backup frr.conf
-    shell: sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@${{ansible_host}} "sudo cat {{frr_dir}}/frr.conf" > {{backup_dir}}/frr.conf
-    ignore_errors: yes
+    shell: sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@{{ansible_host}} "sudo cat {{frr_dir}}/frr.conf" > {{backup_dir}}/frr.conf
     delegate_to: localhost

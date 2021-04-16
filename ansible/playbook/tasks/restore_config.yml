@@ -1,0 +1,12 @@
+- block:
+  - name: restore config_db.json
+    shell: cat ./{{restore_dir}}/{{inventory_hostname}}/config_db.json | sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@{{ansible_host}} "sudo sh -c 'cat > {{config_db_dir}}/config_db.json'"
+    ignore_errors: yes
+    delegate_to: localhost
+    when: restore_dir is defined
+
+  - name: restore frr.conf
+    shell: cat ./{{restore_dir}}/{{inventory_hostname}}/frr.conf | sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@{{ansible_host}} "sudo sh -c 'cat > {{frr_dir}}/frr.conf'"
+    ignore_errors: yes
+    delegate_to: localhost
+    when: restore_dir is defined
