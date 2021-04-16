@@ -1,0 +1,12 @@
+- block:
+  - name: clean up syslog
+    shell: rm -rf /var/log/syslog*
+    become: yes
+
+  - name: clean up swss redis record
+    shell: rm -rf /var/log/swss/*
+    become: yes
+
+  - name: reboot
+    shell: reboot
+    become: yes
