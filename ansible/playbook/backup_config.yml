@@ -2,4 +2,4 @@
   serial: 6
   gather_facts: no
   tasks:
-    - import_tasks: ./tasks/reboot.yml
+    - import_tasks: ./tasks/backup_config.yml
