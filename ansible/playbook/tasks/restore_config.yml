@@ -1,12 +1,17 @@
 - block:
+  - name: set fact
+    set_fact:
+      src_dir: "{{restore_dir}}/{{inventory_hostname}}"
+      login: "{{ansible_user}}@{{ansible_host}}"
+      dst_sonic_command: '"cat > {{config_db_dir}}/config_db.json"'
+      dst_frr_command: '"cat > {{frr_dir}}/frr.conf"'
+
   - name: restore config_db.json
-    shell: cat ./{{restore_dir}}/{{inventory_hostname}}/config_db.json | sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@{{ansible_host}} "sudo sh -c 'cat > {{config_db_dir}}/config_db.json'"
-    ignore_errors: yes
+    shell: cat {{src_dir}}/config_db.json | sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{login}} 'sudo sh -c {{dst_sonic_command}}'
     delegate_to: localhost
     when: restore_dir is defined
 
   - name: restore frr.conf
-    shell: cat ./{{restore_dir}}/{{inventory_hostname}}/frr.conf | sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@{{ansible_host}} "sudo sh -c 'cat > {{frr_dir}}/frr.conf'"
-    ignore_errors: yes
+    shell: cat {{src_dir}}/frr.conf | sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{login}} 'sudo sh -c {{dst_frr_command}}'
     delegate_to: localhost
     when: restore_dir is defined

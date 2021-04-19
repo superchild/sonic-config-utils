@@ -12,7 +12,5 @@ if [ $# -ne 1 ]; then
     usage
     exit 1
 fi
-
-RESTORE_DIR=$1
-
+RESTORE_DIR="$(readlink -f "$1")"
 ansible-playbook -i host.yml -e restore_dir=${RESTORE_DIR} playbook/restore_config.yml
