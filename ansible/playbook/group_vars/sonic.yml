@@ -3,3 +3,6 @@ ansible_user: admin
 ansible_password: YourPaSsWoRd
 config_db_dir: /etc/sonic
 frr_dir: /etc/sonic/frr
+
+# sonic_installer
+skip_account_backup: yes

@@ -1,0 +1,4 @@
+- block:
+  - name: install SONiC NOS
+    shell: sonic_installer install {{image_url}} {{ '--skip_account_backup' if skip_account_backup else ''}} -y
+    become: yes

@@ -1,0 +1,5 @@
+- hosts: sonic
+  serial: 6
+  gather_facts: no
+  tasks:
+    - import_tasks: ./tasks/install_os.yml
