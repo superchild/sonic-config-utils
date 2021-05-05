@@ -1,0 +1,6 @@
+- block:
+  - name: clear ARP entry
+    shell: sonic-clear arp
+
+  - name: clear FDB entry
+    shell: sonic-clear fdb all
