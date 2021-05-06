@@ -1,0 +1,28 @@
+- block:
+  - name: set fact
+    set_fact:
+      src_path: "{{ deb }}"
+      file_name: "{{ deb | basename}}"
+
+  - name: create deb directory
+    file:
+      path: /home/admin/debs
+      state: directory
+      owner: admin
+      mode: "700"
+
+  - block:
+    - name: copy deb file to remote
+      copy:
+        src: "{{ src_path }}"
+        dest: /home/admin/debs/
+        owner: admin
+        group: admin
+
+    - name: copy deb file into containers
+      shell: docker cp /home/admin/debs/{{ file_name }} {{ container }}:/home/
+
+    - name: install deb file inside container
+      shell: docker exec {{ container }} dpkg -i /home/{{ file_name }}
+    when: deb is defined and container is defined
+
