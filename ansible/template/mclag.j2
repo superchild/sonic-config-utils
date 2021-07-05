@@ -1,0 +1,17 @@
+{% block mclag %}
+{% if MCLAG_DOMAIN is defined %}
+{# # mclag configuration #}
+{%   for (id, cfg) in MCLAG_DOMAIN.items() %}
+config mclag add {{ id }} {{ cfg.source_ip }} {{ cfg.peer_ip }}
+{%   endfor %}
+
+{% endif %}
+{% endblock mclag %}
+{% block mclag_member %}
+{% if MCLAG_INTERFACE is defined %}
+{# # mclag member configuration #}
+{%   for intf in MCLAG_INTERFACE %}
+config mclag member add {{ intf[0] }} {{ intf[1] }}
+{%   endfor %}
+{% endif %}
+{% endblock mclag_member %}

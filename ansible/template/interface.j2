@@ -1,0 +1,37 @@
+{% from "common.function.j2" import get_interface_config %}
+{% block interface %}
+{% if LOOPBACK_INTERFACE is defined %}
+{# # loopback interface configuration #}
+{%   for (intf, cfg) in LOOPBACK_INTERFACE.items() %}
+{{ get_interface_config(intf, cfg) }}
+{%   endfor %}
+
+{% endif %}
+{% if INTERFACE is defined %}
+{# # interface configuration #}
+{%   for (intf, cfg) in INTERFACE.items() %}
+{{ get_interface_config(intf, cfg) }}
+{%   endfor %}
+
+{% endif %}
+{% if PORTCHANNEL_INTERFACE is defined %}
+{# # port channel interface configuration #}
+{%   for (intf, cfg) in PORTCHANNEL_INTERFACE.items() %}
+{{ get_interface_config(intf, cfg) }}
+{%   endfor %}
+
+{% endif %}
+{% if VLAN_INTERFACE is defined %}
+{# # VLAN interface configuration #}
+{%   for (intf, cfg) in VLAN_INTERFACE.items() %}
+{{ get_interface_config(intf, cfg) }}
+{%   endfor %}
+
+{% endif %}
+{% if MGMT_INTERFACE is defined %}
+{# # mgmt interface configuration #}
+{%   for (intf, cfg) in MGMT_INTERFACE.items() %}
+{{ get_interface_config(intf, cfg) }}
+{%   endfor %}
+{% endif %}
+{% endblock interface %}

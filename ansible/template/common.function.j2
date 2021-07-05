@@ -1,0 +1,21 @@
+{% macro get_interface_config(intf, cfg) -%}
+{% if intf is string %}
+config interface vrf bind {{ intf }} {{ cfg.vrf_name|default('') }}
+{%- else %}
+config interface ip add {{ intf[0] }} {{ intf[1] }} {{ cfg.gwaddr|default('') }}
+{%- endif %}
+{%- endmacro %}
+
+{% macro get_admin_operation(admin_status) -%}
+{% if admin_status == 'up' %}
+startup
+{%- else %}
+shutdown
+{%- endif %}
+{%- endmacro %}
+
+{% macro get_tagging_mode_arg(tagging_mode) -%}
+{% if tagging_mode == 'untagged' %}
+-u
+{%- endif %}
+{%- endmacro %}

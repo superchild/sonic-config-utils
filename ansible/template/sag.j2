@@ -1,0 +1,23 @@
+{% block sag %}
+{% if SAG_GLOBAL is defined %}
+{# # SAG global configuration #}
+{%   if SAG_GLOBAL.IP.IPv4 is defined %}
+config sag ipv4 {{ SAG_GLOBAL.IP.IPv4 }}
+{%   endif %}
+{%   if SAG_GLOBAL.IP.IPv6 is defined %}
+config sag ipv6 {{ SAG_GLOBAL.IP.IPv6 }}
+{%   endif %}
+{%   if SAG_GLOBAL.IP.gwmac is defined %}
+config sag mac_address add {{ SAG_GLOBAL.IP.gwmac }}
+{%   endif %}
+{% endif %}
+
+{% if SAG is defined %}
+{# # SAG ip configuration #}
+{% for (vlan, cfg) in SAG.items() %}
+{%   for ip in cfg.gwip %}
+config interface sag ip add {{ vlan[0] }} {{ ip }}
+{%   endfor %}
+{% endfor %}
+{% endif %}
+{% endblock sag %}

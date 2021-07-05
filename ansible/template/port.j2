@@ -1,0 +1,14 @@
+{% from "common.function.j2" import get_admin_operation %}
+{% block port %}
+{% if PORT is defined %}
+{# # port configuration #}
+{%   for port, cfg in PORT.items() %}
+config interface {{ get_admin_operation(cfg.admin_status) }} {{ port }}
+config interface mtu {{ port }} {{ cfg.mtu }}
+config interface speed {{ port }} {{ cfg.speed }}
+{%     if cfg.fec is defined %}
+config interface fec {{ port }} {{ cfg.fec }}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+{% endblock port %}

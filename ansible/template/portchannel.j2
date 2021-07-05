@@ -1,0 +1,16 @@
+{% from "common.function.j2" import get_admin_operation %}
+{% block portchannel %}
+{% if PORTCHANNEL is defined %}
+{# # port channel configuration #}
+{%   for (portchannel, cfg) in PORTCHANNEL.items() %}
+config portchannel add {{ portchannel }}
+config interface {{ get_admin_operation(cfg.admin_status) }} {{ portchannel }}
+config interface mtu {{ portchannel }} {{ cfg.mtu }}
+{%   endfor %}
+{% endif %}
+{% if PORTCHANNEL_MEMBER is defined %}
+{%   for member in PORTCHANNEL_MEMBER %}
+config portchannel member add {{ member[0] }} {{ member[1] }}
+{%   endfor %}
+{% endif %}
+{% endblock portchannel %}

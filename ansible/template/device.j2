@@ -1,0 +1,6 @@
+{% block device %}
+{# # hostname configuration #}
+{% if DEVICE_METADATA.localhost.hostname is defined %}
+config hostname {{ DEVICE_METADATA.localhost.hostname }}
+{% endif %}
+{% endblock device %}

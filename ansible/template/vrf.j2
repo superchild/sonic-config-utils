@@ -1,0 +1,8 @@
+{% block vrf %}
+{% if VRF is defined %}
+{# # VRF configuration #}
+{%   for vrf in VRF %}
+config vrf add {{ vrf }}
+{%   endfor %}
+{% endif %}
+{% endblock vrf %}

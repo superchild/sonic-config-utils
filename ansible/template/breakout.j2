@@ -1,0 +1,8 @@
+{% block breakout %}
+{% if BREAKOUT_CFG is defined %}
+{# # port breakout configuration #}
+{%   for (intf, cfg) in BREAKOUT_CFG.items() %}
+config interface breakout {{ intf }} {{ cfg.brkout_mode }}
+{%   endfor %}
+{% endif %}
+{% endblock breakout %}

@@ -1,0 +1,12 @@
+{% from "common.function.j2" import get_tagging_mode_arg %}
+{% block vlan %}
+{% if VLAN is defined %}
+{# # VLAN configuration #}
+{%   for vlan in VLAN %}
+config vlan add {{ vlan[4:] }}
+{%   endfor %}
+{%   for (member, mode) in VLAN_MEMBER.items() %}
+config vlan member add {{ member[0][4:] }} {{ member[1] }} {{ get_tagging_mode_arg(mode.tagging_mode) }}
+{%   endfor %}
+{% endif %}
+{% endblock vlan %}

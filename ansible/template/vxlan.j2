@@ -1,0 +1,22 @@
+{% block vxlan %}
+{% if VXLAN_TUNNEL is defined %}
+{# # vxlan vtep configuration #}
+{%   for (vtep, cfg) in VXLAN_TUNNEL.items() %}
+config vxlan add {{ vtep }} {{ cfg.src_ip }}
+{%   endfor %}
+
+{% endif %}
+{% if VXLAN_EVPN_NVO is defined %}
+{# # vxlan nvo configuration #}
+{%   for (nvo, cfg) in VXLAN_EVPN_NVO.items() %}
+config vxlan evpn_nvo add {{ nvo }} {{ cfg.source_vtep }}
+{%   endfor %}
+
+{% endif %}
+{% if VXLAN_TUNNEL_MAP is defined %}
+{# # vxlan vlan-vni map configuration #}
+{%   for map in VXLAN_TUNNEL_MAP %}
+config vxlan map add {{ map[0] }} {{ map[1] }}
+{%   endfor %}
+{% endif %}
+{% endblock vxlan %}
