@@ -5,4 +5,4 @@ config_db_dir: /etc/sonic
 frr_dir: /etc/sonic/frr
 
 # sonic_installer
-skip_account_backup: yes
+skip_account_backup: no

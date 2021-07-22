@@ -4,13 +4,15 @@ set -e
 
 usage() {
 cat << EOF
-Usage: $0 <image_url>
+Usage: $0 <host_file> <image_url>
 EOF
 }
 
-if [ $# -ne 1 ]; then
+if [ $# -ne 2 ]; then
     usage
     exit 1
 fi
-IMAGE_URL=$1
-ansible-playbook -i host.yml -e image_url=${IMAGE_URL} playbook/install_os.yml
+
+HOST_FILE=$1
+IMAGE_URL=$2
+ansible-playbook -i ${HOST_FILE} -e image_url=${IMAGE_URL} playbook/install_os.yml
