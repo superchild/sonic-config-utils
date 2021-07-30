@@ -1,0 +1,7 @@
+- block:
+  - name: save config_db.json
+    shell: config save -y
+    become: yes
+
+  - name: save frr.conf
+    shell: vtysh -c 'copy running-config startup-config'
