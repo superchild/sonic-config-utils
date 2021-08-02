@@ -6,10 +6,11 @@ Usage: $0 <host_file>
 EOF
 }
 
-if [ $# -ne 1 ]; then
+if [ $# -lt 1 ]; then
     usage
     exit 1
 fi
 
 HOST_FILE=$1
-ansible-playbook -i ${HOST_FILE} playbook/save_config.yml
+shift
+ansible-playbook -i ${HOST_FILE} playbook/save_config.yml $@

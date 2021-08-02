@@ -25,7 +25,7 @@ Usage: $0 <host_file> <deb_file> <container>
 EOF
 }
 
-if [ $# -ne 3 ]; then
+if [ $# -lt 3 ]; then
     usage
     exit 1
 fi
@@ -39,4 +39,5 @@ if [[ ! " ${containers[@]} " =~ " ${CONTAINER} " ]]; then
     exit 1
 fi
 
-ansible-playbook -i ${HOST_FILE} -e deb=${DEB_FILE} -e container=${CONTAINER} playbook/install_deb.yml
+shift
+ansible-playbook -i ${HOST_FILE} -e deb=${DEB_FILE} -e container=${CONTAINER} playbook/install_deb.yml $@
