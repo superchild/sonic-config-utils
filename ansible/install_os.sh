@@ -15,5 +15,5 @@ fi
 
 HOST_FILE=$1
 IMAGE_URL=$2
-shift
+shift 2
 ansible-playbook -i ${HOST_FILE} -e image_url=${IMAGE_URL} playbook/install_os.yml $@

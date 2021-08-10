@@ -15,5 +15,5 @@ fi
 
 HOST_FILE=$1
 RESTORE_DIR="$(readlink -f "$2")"
-shift
+shift 2
 ansible-playbook -i ${HOST_FILE} -e restore_dir=${RESTORE_DIR} playbook/restore_config.yml $@

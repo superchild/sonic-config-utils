@@ -39,5 +39,5 @@ if [[ ! " ${containers[@]} " =~ " ${CONTAINER} " ]]; then
     exit 1
 fi
 
-shift
+shift 3
 ansible-playbook -i ${HOST_FILE} -e deb=${DEB_FILE} -e container=${CONTAINER} playbook/install_deb.yml $@
