@@ -54,7 +54,7 @@ Usage: ./restore.sh env.conf ./backup/20210401_165045
 
 ## Ansible
 ### Inventory File
-The host inventory config file is `ansible/host.yml`, backup/restore scripts needs to specify the target devices name and ip as the following format, the `sonic` group variables are defined in the `ansible/playbook/group/vars/sonic.yml`
+The host inventory config file is under `ansible/host_vars/`, backup/restore scripts needs to specify the target devices name and ip as the following format, the `sonic` group variables are defined in the `ansible/playbook/group/vars/sonic.yml`
 ```
 all:
   children:
@@ -75,6 +75,8 @@ all:
 
 
 ```
+
+All related shell scripts can pass ansible playbooks argument, like `-l spine-1` to limit the device to execute the tasks.
 
 ### Folder Structure
 The devices' config file needs to be consistent in the following folder strcture, and the folder name should be the same as config file
@@ -105,26 +107,26 @@ The devices' config file needs to be consistent in the following folder strcture
 This script backup SONiC `config_db.json` and `frr.conf` to local folder under `ansible/backup/<date +%Y%m%d_%H%M%S>`, 
 
 ```
-Usage: ./backup.sh
+Usage: ./backup.sh ./host_vars/host.yml
 ```
 
 ### Restore
 This script restore SONiC `config_db.json` and `frr.conf` from local specified folder to devices
 
 ```
-Usage: ./restore.sh ./backup/20210401_165045
+Usage: ./restore.sh ./host_vars/host.yml ./backup/20210401_165045
 ```
 
 ### Reboot
 This script reboot SONiC devices
 ```
-Usage: ./reboot.sh
+Usage: ./reboot.sh ./host_vars/host.yml
 ```
 
 ### Running Command
 This script render current SONiC devices config to command format
 ```
-Usage: ./running_cmd.sh
+Usage: ./running_cmd.sh ./host_vars/host.yml
 ```
 
 The rendered file will be saved in the current timestamp folder as the following
@@ -138,7 +140,7 @@ running_cmd
     ├── spine-1
     └── spine-2
 ```
-The rendered files will be the hostname configured in `host.yml`
+The rendered files will be the hostname configured in the specified host file.
 
 #### Running Command Format
 It use empty line to separate different functions, it can be executed on the SONiC devices
@@ -425,4 +427,28 @@ config vxlan evpn_nvo add evpnnvo1 vtep
 config vxlan map add vtep map_10200_Vlan200
 config vxlan map add vtep map_10201_Vlan201
 config vxlan map add vtep map_104001_Vlan4001
+```
+
+### Install OS
+This script install new NOS image with URL that image can be downloaded 
+```
+Usage: ./install_os.sh ./host_vars/host.yml http://192.168.1.1/sonic-broadcom.bin
+```
+
+### Install debian file
+This script install debian file to the specific container running on the device
+```
+Usage: ./install_deb.sh ./host_vars/host.yml ./deb/swss.deb swss
+```
+
+### Save config 
+This script save SONiC running config to config_db.json, and FRR running config to frr.conf
+```
+Usage: ./save_config.sh ./host_vars/host.yml
+```
+
+### Clear FDB and ARP
+This script clear all FDB and ARP entries on the devices
+```
+Usage: ./clear_fdb_arp.sh ./host_vars/host.yml
 ```
