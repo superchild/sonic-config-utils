@@ -11,6 +11,6 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-HOST_FILE=$
+HOST_FILE=$1
 shift
 ansible-playbook -i ${HOST_FILE} playbook/clear_fdb_arp.yml $@
