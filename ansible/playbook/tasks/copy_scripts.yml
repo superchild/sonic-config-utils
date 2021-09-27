@@ -1,0 +1,9 @@
+- block:
+  - name: copy scripts to device
+    become: true
+    copy:
+      src: "{{playbook_dir}}/../scripts"
+      dest: /home/admin/
+      owner: admin
+      group: admin
+      mode: 0744
