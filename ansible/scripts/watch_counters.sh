@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PORT_CFG=${PORT_CFG:="ports.inc"}
-INTERVAL=${INTERVAL:=1}
+PORT_CFG=${PORT_CFG:-"ports.inc"}
+INTERVAL=${INTERVAL:-1}
 generate_interfaces() {
     local config=$1
     LLDP_CMD=$(show lldp table | head -n -2 | tail -n +4 | tr -s ' ' | cut -d ' ' -f 1)
