@@ -15,8 +15,17 @@ config vxlan evpn_nvo add {{ nvo }} {{ cfg.source_vtep }}
 {% endif %}
 {% if VXLAN_TUNNEL_MAP is defined %}
 {# # vxlan vlan-vni map configuration #}
-{%   for map in VXLAN_TUNNEL_MAP %}
-config vxlan map add {{ map[0] }} {{ map[1] }}
+{%   for map in VXLAN_TUNNEL_MAP.values() %}
+config vxlan map add {{ map.vlan| replace('Vlan', '') }} {{ map.vni }}
 {%   endfor %}
 {% endif %}
 {% endblock vxlan %}
+
+{% if VRF is defined %}
+{# # vxlan vrf vni map #}
+{%   for (vrf, vals) in VRF.items() %}
+{% if vals.vni is defined %}
+config vrf add_vrf_vni_map {{vrf}} {{vals.vni}}
+{% endif %}
+{%   endfor %}
+{% endif %}
