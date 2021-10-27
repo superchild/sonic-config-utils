@@ -4,6 +4,14 @@
       dst_dir: "/tmp"
       running_cmd_dir: "{{playbook_dir}}/../running_cmd/{{ lookup('pipe','date +%Y-%m-%d_%H-%M') }}"
 
+  - name: create backup directory
+    file:
+        path: "{{running_cmd_dir}}"
+        state: directory
+        mode: '0755'
+    delegate_to: localhost
+    run_once: true
+
   - name: copy template file to device
     copy:
       src: "{{template_dir}}"
@@ -11,13 +19,6 @@
 
   - name: render running command to files
     shell: sonic-cfggen -d -t {{dst_dir}}/{{template_dir|basename}}/sonic.j2 > {{dst_dir}}/{{inventory_hostname}}
-
-  - name: create backup directory
-    file:
-        path: "{{running_cmd_dir}}"
-        state: directory
-        mode: '0755'
-    delegate_to: localhost
 
   - name: copy render file back
     fetch:
