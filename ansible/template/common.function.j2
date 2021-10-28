@@ -1,6 +1,8 @@
 {% macro get_interface_config(intf, cfg) -%}
 {% if intf is string %}
-config interface vrf bind {{ intf }} {{ cfg.vrf_name|default('') }}
+{% if cfg.vrf_name and cfg.vrf_name != '' %}
+config interface vrf bind {{ intf }} {{ cfg.vrf_name }}
+{%- endif %}
 {%- else %}
 config interface ip add {{ intf[0] }} {{ intf[1] }} {{ cfg.gwaddr|default('') }}
 {%- endif %}
