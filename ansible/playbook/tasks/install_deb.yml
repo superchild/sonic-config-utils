@@ -18,11 +18,20 @@
         dest: /home/admin/debs/
         owner: admin
         group: admin
+    
+    - block:
+      - name: copy deb file into containers
+        shell: docker cp /home/admin/debs/{{ file_name }} {{ target }}:/home/
 
-    - name: copy deb file into containers
-      shell: docker cp /home/admin/debs/{{ file_name }} {{ container }}:/home/
-
-    - name: install deb file inside container
-      shell: docker exec {{ container }} dpkg -i /home/{{ file_name }}
-    when: deb is defined and container is defined
+      - name: install deb file inside container
+        shell: docker exec {{ target }} dpkg -i /home/{{ file_name }}
+      when: target != "host"
+      
+    - name: install deb file on host
+      shell: dpkg -i /home/admin/debs/{{ file_name }}
+      become: yes
+      when: target == "host"
+    
+    when: deb is defined and target is defined
+    
 

@@ -2,26 +2,27 @@
 
 set -e
 
-containers=('snmp'
-            'radv'
-            'dhcp_relay'
-            'mgmt-framework'
-            'nat'
-            'lldp'
-            'sflow'
-            'stp'
-            'telemetry'
-            'syncd'
-            'teamd'
-            'iccpd'
-            'swss'
-            'pmon'
-            'bgp'
-            'database')
+targets=('snmp'
+        'radv'
+        'dhcp_relay'
+        'mgmt-framework'
+        'nat'
+        'lldp'
+        'sflow'
+        'stp'
+        'telemetry'
+        'syncd'
+        'teamd'
+        'iccpd'
+        'swss'
+        'pmon'
+        'bgp'
+        'database',
+        'host')
 
 usage() {
 cat << EOF
-Usage: $0 <host_file> <deb_file> <container>
+Usage: $0 <host_file> <deb_file> <target>
 EOF
 }
 
@@ -32,12 +33,12 @@ fi
 
 HOST_FILE=$1
 DEB_FILE=$2
-CONTAINER=$3
+TARGET=$3
 
-if [[ ! " ${containers[@]} " =~ " ${CONTAINER} " ]]; then
-    echo "${CONTAINER} container doesn't existed in (${containers[@]})"
+if [[ ! " ${targets[@]} " =~ " ${TARGET} " ]]; then
+    echo "${TARGET} target doesn't existed in (${targets[@]})"
     exit 1
 fi
 
 shift 3
-ansible-playbook -i ${HOST_FILE} -e deb=${DEB_FILE} -e container=${CONTAINER} playbook/install_deb.yml $@
+ansible-playbook -i ${HOST_FILE} -e deb=${DEB_FILE} -e target=${TARGET} playbook/install_deb.yml $@
