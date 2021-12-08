@@ -10,6 +10,10 @@
         mode: '0755'
     delegate_to: localhost
 
+  - name: backup version information
+    shell: sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@{{ansible_host}} "sudo show version" > {{backup_dir}}/version_info.txt
+    delegate_to: localhost
+
   - name: backup config_db.json
     shell: sshpass -p {{ansible_password}} ssh -q -o StrictHostKeyChecking=no {{ansible_user}}@{{ansible_host}} "sudo cat {{config_db_dir}}/config_db.json" > {{backup_dir}}/config_db.json
     delegate_to: localhost
