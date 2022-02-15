@@ -145,7 +145,7 @@ The rendered files will be the hostname configured in the specified host file.
 #### Running Command Format
 It use empty line to separate different functions, it can be executed on the SONiC devices
 ```
-config hostname Supership-ext-Leaf-1
+config hostname ext-Leaf-1
 
 config interface breakout Ethernet0 1x10G[1G]
 config interface breakout Ethernet1 1x10G[1G]
