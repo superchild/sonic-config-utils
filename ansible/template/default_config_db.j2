@@ -1,0 +1,40 @@
+{
+    "DEVICE_METADATA": {
+        "localhost": {
+            "hostname": "sonic",
+            "hwsku": "{{ DEVICE_METADATA['localhost']['hwsku'] }}",
+            "mac": "{{ DEVICE_METADATA['localhost']['mac'] }}",
+            "docker_routing_config_mode": "split",
+            "platform": "{{ DEVICE_METADATA['localhost']['platform'] }}",
+            "type": "LeafRouter"
+        }
+    },
+    "MGMT_INTERFACE": {
+        "eth0|192.168.99.99/24 ": {
+            "gwaddr": "192.168.99.254"
+        }
+    },
+    "MGMT_PORT": {
+        "eth0": {
+            "admin_status": "up",
+            "alias": "eth0"
+        }
+    },
+    {% set ns = {'firstPrinted': False} -%}
+    "PORT": {
+        {%- for key, value in PORT.items() -%}
+        {%- if ns.firstPrinted %},{% endif %}
+
+        "{{ key }}": {
+            {%- for keyPort, valuePort in value.items() %}
+
+            {% if keyPort != "admin_status" %}"{{ keyPort }}": "{{ valuePort }}",{% endif %}
+            {%- endfor %}
+
+            "admin_status": "{{ value.admin_status|default("up") }}"
+        }
+        {%- if ns.update({'firstPrinted': True}) %}{% endif -%}
+        {%- endfor %}
+
+    }
+}

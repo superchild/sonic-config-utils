@@ -1,0 +1,43 @@
+- block:
+  - name: copy template
+    ansible.builtin.copy:
+      src: "{{playbook_dir}}/../template/default_config_db.j2"
+      dest: /tmp/factory.j2
+
+  - name: replace template hostname
+    shell: sed -i 's/sonic/{{inventory_hostname}}/g' /tmp/factory.j2
+    
+  - name: copy generate script
+    ansible.builtin.copy:
+      src: "{{playbook_dir}}/../scripts/gen_default_config_db.sh"
+      dest: /tmp
+  
+  - name: generate default config db
+    shell: bash /tmp/gen_default_config_db.sh
+
+  - name: backup config_db.json
+    ansible.builtin.copy:
+      remote_src: yes
+      src: /etc/sonic/config_db.json
+      dest: /etc/sonic/config_db.json.bak
+    become: yes
+
+  - name: backup frr.conf
+    ansible.builtin.copy:
+      remote_src: yes
+      src: /etc/sonic/frr/frr.conf
+      dest: /etc/sonic/frr/frr.conf.bak
+    become: yes
+
+  - name: override existing config_db.json
+    ansible.builtin.copy:
+      remote_src: yes
+      src: /tmp/config_db.json
+      dest: /etc/sonic/config_db.json
+    become: yes
+  
+  - name: remove frr.conf
+    ansible.builtin.file:
+      path: /etc/sonic/frr/frr.conf
+      state: absent
+    become: yes
